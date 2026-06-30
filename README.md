@@ -12,6 +12,10 @@ A premium, cinematic movie & TV discovery app built with **Next.js 14**, **Tailw
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-FF0050?style=for-the-badge&logo=framer)
 ![License](https://img.shields.io/badge/License-MIT-7C3AED?style=for-the-badge)
 
+**[🌐 Live Demo](https://reelnova-coral.vercel.app)**
+
+![ReelNova](docs/screenshots/01-home.png)
+
 </div>
 
 ---
@@ -20,7 +24,21 @@ A premium, cinematic movie & TV discovery app built with **Next.js 14**, **Tailw
 
 ReelNova is a design-forward, fully responsive frontend for browsing movies and TV shows. It pulls live data from [The Movie Database (TMDB)](https://www.themoviedb.org) and wraps it in a cinematic interface — animated content rails, a rich detail view with trailers and cast, genre browsing, infinite scroll, a command-palette search, and a local favorites collection. No backend required.
 
-> 📸 _Add screenshots/GIFs here once running:_ `docs/home.png`, `docs/detail.png`, `docs/search.png`
+### 🎥 Demo
+
+![ReelNova demo](docs/demo.gif)
+
+### 📸 Screenshots
+
+| Home | Movie detail |
+| --- | --- |
+| ![Home](docs/screenshots/01-home.png) | ![Detail](docs/screenshots/03-movie-detail.png) |
+
+| Search | Genres |
+| --- | --- |
+| ![Search](docs/screenshots/04-search.png) | ![Genres](docs/screenshots/05-genres.png) |
+
+> Screenshots and the demo GIF are generated automatically — see [Generating media](#-generating-media).
 
 ---
 
@@ -130,7 +148,34 @@ All data comes from TMDB via a thin service layer (`services/tmdb-service.js`) o
 
 ---
 
-## ☁️ Deployment
+## 📷 Generating media
+
+Screenshots and the demo GIF are produced by [Playwright](https://playwright.dev) against the live site (or a local build), then assembled with `ffmpeg`.
+
+```bash
+# one-time setup
+npm install
+npx playwright install chromium    # download the browser
+# ffmpeg also required for the GIF (preinstalled on most CI / macOS via brew)
+
+# capture everything (screenshots → docs/screenshots, gif → docs/demo.gif)
+npm run media
+
+# or run them separately
+npm run shots                       # screenshots only
+npm run demo                        # demo GIF only
+
+# target a local dev server instead of the deployed site
+BASE_URL=http://localhost:3000 npm run media
+```
+
+`BASE_URL` defaults to the deployed site, so `npm run media` works out of the box. The capture routes and the demo walkthrough live in `scripts/capture.mjs` and `scripts/demo.mjs`.
+
+**On autopilot:** the [`Generate media`](.github/workflows/media.yml) GitHub Action regenerates and commits these assets — trigger it manually from the **Actions** tab (optionally passing a different URL) or let the weekly schedule keep them fresh.
+
+---
+
+
 
 Deploys cleanly to **Vercel**:
 

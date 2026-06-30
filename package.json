@@ -10,7 +10,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"**/*.{js,jsx,json,css,md}\""
+    "format": "prettier --write \"**/*.{js,jsx,json,css,md}\"",
+    "shots": "node scripts/capture.mjs",
+    "demo": "node scripts/demo.mjs",
+    "media": "npm run shots && npm run demo"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.59.0",
@@ -35,6 +38,7 @@
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
+    "playwright": "^1.48.0",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.13"
   }

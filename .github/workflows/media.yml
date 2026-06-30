@@ -1,0 +1,59 @@
+name: Generate media
+
+# Captures screenshots + a demo GIF from the live site and commits them.
+# Run it manually from the Actions tab, or it runs weekly to stay fresh.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Site URL to capture'
+        required: false
+        default: 'https://reelnova-coral.vercel.app'
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  media:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      # ffmpeg is preinstalled on ubuntu-latest runners, but make sure.
+      - name: Ensure ffmpeg
+        run: ffmpeg -version || sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Capture screenshots
+        env:
+          BASE_URL: ${{ github.event.inputs.base_url || 'https://reelnova-coral.vercel.app' }}
+        run: npm run shots
+
+      - name: Record demo GIF
+        env:
+          BASE_URL: ${{ github.event.inputs.base_url || 'https://reelnova-coral.vercel.app' }}
+        run: npm run demo
+
+      - name: Clean up intermediate video
+        run: rm -f docs/demo.webm
+
+      - name: Commit media
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: refresh screenshots and demo GIF'
+          file_pattern: 'docs/**'
