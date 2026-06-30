@@ -26,7 +26,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://reelnova.vercel.app'),
+  metadataBase: new URL('https://reelnova-coral.vercel.app/'),
   title: {
     default: `${SITE.name} — ${SITE.tagline}`,
     template: `%s · ${SITE.name}`,
